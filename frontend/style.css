@@ -59,6 +59,22 @@ body {
 .page { display: none; width: 90%; max-width: 1200px; margin: 0 auto; }
 .page.active { display: block; animation: fadeIn 0.5s; }
 
+.main-action-btn {
+    background-color: #ffffff; /* Solid white background as seen in the mockup */
+    color: #000000;            /* Black text for high contrast */
+    border: none;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.main-action-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 255, 255, 0.3);
+}
+
 /* Твоя карточка в новом стиле */
 .card {
     background: rgba(0,0,0,0.35);
@@ -117,3 +133,268 @@ body {
 
 .page { display: none; }
 .page.active { display: block; animation: fadeIn 0.4s ease; }
+
+
+.faq-container {
+    margin-top: 30px;
+    text-align: left;
+}
+
+.faq-item {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    margin-bottom: 15px;
+    overflow: hidden;
+    transition: 0.3s;
+}
+
+.faq-item[open] {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: #adff00;
+}
+
+.faq-item summary {
+    padding: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    outline: none;
+}
+
+.faq-item summary::after {
+    content: '→';
+    color: #adff00;
+    transition: 0.3s;
+}
+
+.faq-item[open] summary::after {
+    transform: rotate(90deg);
+}
+
+.faq-content {
+    padding: 0 20px 20px 20px;
+    line-height: 1.6;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 14px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.faq-content strong {
+    color: #adff00;
+}
+
+.section-divider {
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    margin: 40px 0;
+}
+
+.ask-question-section {
+    text-align: left;
+    margin-top: 20px;
+}
+
+.ask-question-section h3 {
+    color: #adff00;
+    margin-bottom: 10px;
+}
+
+.support-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-top: 20px;
+    max-width: 600px;
+}
+
+.support-form input, 
+.support-form textarea {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    padding: 12px;
+    color: white;
+    font-family: inherit;
+}
+
+.support-form textarea {
+    min-height: 120px;
+    resize: vertical;
+}
+
+#sendSupportBtn {
+    width: fit-content;
+    padding: 12px 30px;
+    background-color: #ffffff;
+    color: #000;
+}
+
+.hero-section {
+    padding: 60px 20px;
+    text-align: center;
+    background: linear-gradient(180deg, rgba(173, 255, 0, 0.05) 0%, transparent 100%);
+    border-radius: 24px;
+    margin-bottom: 40px;
+}
+
+.hero-section h1 {
+    font-size: 3rem;
+    margin-bottom: 15px;
+    background: linear-gradient(90deg, #fff, #adff00);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.hero-actions {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 25px;
+}
+
+.secondary-btn {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 12px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: bold;
+    transition: 0.3s;
+}
+.secondary-btn:hover { background: rgba(255, 255, 255, 0.2); }
+
+.stats-row {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    flex-wrap: wrap;
+}
+
+.stat-card {
+    background: rgba(255, 255, 255, 0.05);
+    padding: 25px;
+    border-radius: 15px;
+    min-width: 180px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    text-align: center;
+}
+
+.stat-card h3 { color: #adff00; font-size: 1.8rem; margin: 0; }
+.stat-card p { color: rgba(255,255,255,0.6); margin-top: 5px; }
+
+#services-page .glass-card {
+    padding: 40px;
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 24px;
+}
+
+#services-page h2 {
+    font-size: 28px;
+    margin-bottom: 30px;
+    font-weight: 700;
+}
+
+#services-page .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 40px;
+    margin-top: 20px;
+}
+
+.form-section {
+    flex: 2;
+    min-width: 300px;
+}
+
+.my-stats {
+    flex: 1;
+    min-width: 250px;
+    padding-left: 20px;
+    border-left: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.form-section h3, .my-stats h3 {
+    font-size: 18px;
+    margin-bottom: 20px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+#services-page input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 8px;
+    padding: 12px 15px;
+    color: white;
+    font-size: 14px;
+    margin-bottom: 15px;
+    width: calc(33% - 20px); 
+    min-width: 120px;
+    transition: all 0.3s ease;
+}
+
+#services-page input:focus {
+    border-color: #adff00;
+    background: rgba(255, 255, 255, 0.08);
+    box-shadow: 0 0 10px rgba(173, 255, 0, 0.1);
+    outline: none;
+}
+
+#createBtn {
+    width: auto;
+    padding: 12px 30px;
+    margin-top: 5px;
+    font-size: 14px;
+    letter-spacing: 0.5px;
+}
+
+#myHistory {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 12px;
+    padding: 20px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.5);
+    text-align: center;
+    border: 1px dashed rgba(255, 255, 255, 0.1);
+}
+
+@media (max-width: 768px) {
+    #services-page input {
+        width: 100%;
+        margin-right: 0;
+    }
+    
+    .my-stats {
+        border-left: none;
+        border-top: 1px solid rgba(255, 255, 255, 0.1);
+        padding-left: 0;
+        padding-top: 20px;
+    }
+}
+
+/* Специальные стили для секции Services */
+.form-section input {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 4px;
+    padding: 8px 12px;
+    color: white;
+    margin-right: 10px; /* Отступ между полями */
+    width: 180px;
+}
+
+#createBtn {
+    background: #adff00; /* Неоновый зеленый как на логотипе */
+    color: black;
+    border: none;
+    padding: 8px 20px;
+    border-radius: 4px;
+    font-weight: bold;
+    cursor: pointer;
+}

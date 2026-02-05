@@ -1,20 +1,19 @@
-const TOKEN_ADDRESS = "0x0165878a594ca255338adfa4d48449f69242eb8f";
-const NFT_ADDRESS = "0x0000000000000000000000000000000000000000"; 
+// Константы (проверь адрес NFT в DEPLOYMENT.md)
+const TOKEN_ADDRESS = "0x5fbdb2315678afecb367f032d93f642f64180aa3"; // Week4Token
+const NFT_ADDRESS = "0xe7f1725e7734ce288f8367e1bb143e90bb3f0512";   // Week4NFT
 
 let provider, signer, tokenContract, nftContract;
 
 const connectBtn = document.getElementById("connectBtn");
-const accountSpan = document.getElementById("account");
 const balanceSpan = document.getElementById("balance");
-const networkSpan = document.getElementById("network");
-const statusText = document.getElementById("status");
+const accountSpan = document.getElementById("account"); 
 
 const petNameInput = document.getElementById("petName");
 const goalInput = document.getElementById("goal");
 const durationInput = document.getElementById("duration");
 const createBtn = document.getElementById("createBtn");
 
-// 1. ПОДКЛЮЧЕНИЕ КОШЕЛЬКА
+// 1.CONNECTS WALLET
 connectBtn.onclick = async () => {
     if (!window.ethereum) {
         alert("Please install MetaMask");
@@ -27,89 +26,96 @@ connectBtn.onclick = async () => {
         signer = await provider.getSigner();
         
         const userAddress = await signer.getAddress();
-        const network = await provider.getNetwork();
 
-        accountSpan.textContent = `${userAddress.substring(0, 6)}...${userAddress.substring(38)}`;
-        networkSpan.textContent = network.name;
-        connectBtn.textContent = "CONNECTED";
+        connectBtn.textContent = `${userAddress.substring(0, 4)}...${userAddress.substring(38)}`;
         connectBtn.style.background = "#ffffff";
+        connectBtn.style.color = "#000000";
 
-        tokenContract = new ethers.Contract(TOKEN_ADDRESS, TOKEN_ABI, signer);
-        nftContract = new ethers.Contract(NFT_ADDRESS, NFT_ABI, signer);
+        tokenContract = new ethers.Contract(TOKEN_ADDRESS, window.TOKEN_ABI, signer);
+        nftContract = new ethers.Contract(NFT_ADDRESS, window.NFT_ABI, signer);
 
         await updateBalance();
-        updateStatus("Connected to MetaMask");
+        console.log("Connected successfully");
     } catch (error) {
-        console.error(error);
-        updateStatus("Connection failed");
+        console.error("Connection failed", error);
     }
 };
 
+// 2.UPDATES PBT
 async function updateBalance() {
     try {
         const userAddr = await signer.getAddress();
         const balance = await tokenContract.balanceOf(userAddr);
-        balanceSpan.textContent = ethers.formatUnits(balance, 18);
+        balanceSpan.textContent = parseFloat(ethers.formatUnits(balance, 18)).toFixed(2);
     } catch (err) {
         console.error("Balance update failed", err);
     }
 }
 
-createBtn.onclick = async () => {
-    if (!nftContract) return alert("Connect wallet first!");
+// 3.(SERVICES)
+if (createBtn) {
+    createBtn.onclick = async () => {
+        if (!nftContract) return alert("Please connect wallet first!");
 
-    const name = petNameInput.value;
-    const goal = goalInput.value;
-    const days = durationInput.value;
+        const name = petNameInput.value;
+        const goal = goalInput.value;
+        const days = durationInput.value;
 
-    if (!name || !goal || !days) return alert("Fill all fields");
+        if (!name || !goal || !days) return alert("Please fill all fields");
 
-    try {
-        updateStatus("Pending transaction...");
-        
-        // Переводим ETH в Wei и дни в секунды
-        const goalWei = ethers.parseEther(goal);
-        const durationSec = parseInt(days) * 86400;
+        try {
+            const goalWei = ethers.parseEther(goal);
+            const durationSec = parseInt(days) * 86400;
 
-        const tx = await nftContract.createPetCampaign(name, goalWei, durationSec);
-        
-        updateStatus("Transaction sent! Waiting for block...");
-        await tx.wait();
-        
-        updateStatus(`Success! Campaign "${name}" created.`);
-        clearForm();
-    } catch (error) {
-        console.error(error);
-        updateStatus("Transaction failed: " + error.reason);
-    }
-};
-
-const searchInput = document.getElementById("searchInput");
-searchInput.oninput = () => {
-    const query = searchInput.value.toLowerCase();
-    const cards = document.querySelectorAll(".pet-card");
-
-    cards.forEach(card => {
-        const name = card.querySelector("h3").textContent.toLowerCase();
-        const rarity = card.querySelector(".rarity").textContent.toLowerCase();
-        
-        if (name.includes(query) || rarity.includes(query)) {
-            card.style.display = "block";
-        } else {
-            card.style.display = "none";
+            const tx = await nftContract.createPetCampaign(name, goalWei, durationSec);
+            alert("Transaction sent! Waiting for confirmation...");
+            
+            await tx.wait();
+            alert(`Success! Campaign for "${name}" is live.`);
+            
+            petNameInput.value = "";
+            goalInput.value = "";
+            durationInput.value = "";
+            
+            await updateBalance();
+        } catch (error) {
+            console.error(error);
+            alert("Error: " + (error.reason || "Transaction failed"));
         }
-    });
-};
-
-function updateStatus(msg) {
-    if (statusText) statusText.textContent = msg;
+    };
 }
 
-function clearForm() {
-    petNameInput.value = "";
-    goalInput.value = "";
-    durationInput.value = "";
+// 4.(SEARCH BAR)
+const searchInput = document.getElementById("searchInput");
+if (searchInput) {
+    searchInput.oninput = () => {
+        const query = searchInput.value.toLowerCase();
+        const cards = document.querySelectorAll(".pet-card");
+
+        cards.forEach(card => {
+            const name = card.querySelector("h3").textContent.toLowerCase();
+            const rarity = card.querySelector(".rarity") ? card.querySelector(".rarity").textContent.toLowerCase() : "";
+            
+            card.style.display = (name.includes(query) || rarity.includes(query)) ? "block" : "none";
+        });
+    };
 }
+
+document.getElementById("sendSupportBtn").onclick = () => {
+    const subject = document.getElementById("supportSubject").value;
+    const message = document.getElementById("supportMessage").value;
+
+    if (!subject || !message) {
+        alert("Please fill in both the subject and your question.");
+        return;
+    }
+
+    console.log("Support Ticket Sent:", { subject, message });
+    alert("Your message has been received! We will get back to you soon.");
+    
+    document.getElementById("supportSubject").value = "";
+    document.getElementById("supportMessage").value = "";
+}; 
 
 if (window.ethereum) {
     window.ethereum.on('accountsChanged', () => window.location.reload());
