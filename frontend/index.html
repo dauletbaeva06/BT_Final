@@ -3,32 +3,125 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pet Battle DApp</title>
+  <title>PetsDApp | NFT Ecosystem</title>
   <link rel="stylesheet" href="./style.css" />
 </head>
 <body>
-  <div class="card">
-    <h1>Pet Battle DApp</h1>
 
-    <button id="connectBtn">Connect MetaMask</button>
+  <nav class="glass-nav">
+    <div class="nav-logo">PETSBATTLE<span>DAPP</span></div>
+    
+    <div class="nav-center">
+      <div class="nav-search">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" placeholder="Search pets or rarity..." />
+      </div>
+      
+      <ul class="nav-menu">
+        <li class="nav-item active" data-target="explore-page">GAMING</li>
+        <li class="nav-item" data-target="services-page">SERVICES</li>
+        <li class="nav-item" data-target="arena-page">ARENA</li>
+        <li class="nav-item" data-target="docs-page">DOCS</li>
+      </ul>
+    </div>
 
-    <div class="row"><span>Network:</span> <b id="network">—</b></div>
-    <div class="row"><span>Account:</span> <b id="account">—</b></div>
-    <div class="row"><span>Balance (PBT):</span> <b id="balance">—</b></div>
+    <div class="nav-right">
+      <div class="token-badge"><span id="balance">0</span> <b>PBT</b></div>
+      <button id="connectBtn" class="nav-connect-btn">CONNECT WALLET</button>
+    </div>
+  </nav>
 
-    <hr />
+  <main class="app-container">
+    
+    <section id="explore-page" class="page active">
+      <div class="page-header">
+        <h1>Active Pet Campaigns</h1>
+        <div class="filter-chips">
+          <span class="chip active">All</span>
+          <span class="chip">Legendary</span>
+          <span class="chip">Epic</span>
+          <span class="chip">Ending Soon</span>
+        </div>
+      </div>
+      <div id="campaignsGrid" class="grid">
+        <div class="card pet-card">
+            <div class="rarity">LEGENDARY</div>
+            <h3>Fire Dragon</h3>
+            <div class="progress-container">
+                <div class="progress-bar" style="width: 45%;"></div>
+            </div>
+            <p>0.9 / 2.0 ETH</p>
+            <button class="action-btn">CONTRIBUTE</button>
+        </div>
+      </div>
+    </section>
 
-    <h3>Transfer</h3>
-    <input id="to" placeholder="Receiver address (0x...)" />
-    <input id="amount" placeholder="Amount (e.g. 10)" />
-    <button id="sendBtn">Send</button>
+    <section id="services-page" class="page">
+      <div class="card glass-card">
+        <h2>Dashboard & Creation</h2>
+        <div class="row">
+            <div class="form-section">
+                <h3>Launch New Pet</h3>
+                <input id="petName" placeholder="Pet Name" />
+                <input id="goal" type="number" placeholder="Goal (ETH)" />
+                <input id="duration" type="number" placeholder="Days" />
+                <button id="createBtn" class="main-action-btn">CREATE CAMPAIGN</button>
+            </div>
+            <div class="my-stats">
+                <h3>My Contributions</h3>
+                <div id="myHistory">History is empty...</div>
+            </div>
+        </div>
+      </div>
+    </section>
 
-    <p id="status" class="status"></p>
-  </div>
+    <section id="arena-page" class="page">
+        <div class="arena-container">
+            <div class="card">
+                <h2>Battle Arena ⚔️</h2>
+                <div class="arena-placeholder">Select your NFT Pet to stake and start battle log</div>
+                <button class="main-action-btn">STAKE PET</button>
+            </div>
+            <div class="card inventory">
+                <h3>My Inventory</h3>
+                <div id="nftGallery" class="grid-small">No NFTs claimed yet.</div>
+            </div>
+        </div>
+    </section>
+
+    <section id="docs-page" class="page">
+        <div class="card docs-card">
+            <h2>Help Center & Tokenomics</h2>
+            <div class="docs-content">
+                <div class="doc-item">
+                    <h4>How to Connect?</h4>
+                    <p>Switch your MetaMask to <b>Sepolia Network</b>. Use <a href="#">Sepolia Faucet</a> to get free ETH.</p>
+                </div>
+                <div class="doc-item">
+                    <h4>Token Utility</h4>
+                    <p>PET tokens increase your Dragon's power by 15% on the Arena.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+  </main>
 
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.16.0/dist/ethers.umd.min.js"></script>
-
   <script src="./abi.js"></script>
   <script src="./app.js"></script>
+
+  <script>
+    document.querySelectorAll('.nav-item').forEach(item => {
+      item.addEventListener('click', () => {
+        document.querySelectorAll('.nav-item').forEach(i => i.classList.remove('active'));
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        
+        item.classList.add('active');
+        const target = item.getAttribute('data-target');
+        document.getElementById(target).classList.add('active');
+      });
+    });
+  </script>
 </body>
 </html>
